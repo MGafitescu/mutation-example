@@ -21,11 +21,13 @@
         <groovy.version>4.0.21</groovy.version>
         <spock.framework.version>2.3-groovy-4.0</spock.framework.version>
         <gmavenplus-plugin.version>1.12.1</gmavenplus-plugin.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     </properties>
 
     <scm>
         <connection>scm:git:https://github.com/MGafitescu/mutation-example/mutation-example.git</connection>
-        <developerConnection>scm:git:https://github.com/MGafitescu/mutation-example/mutation-example.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/MGafitescu/mutation-example/mutation-example.git
+        </developerConnection>
         <url>https://github.com/MGafitescu/mutation-example</url>
     </scm>
 
@@ -90,6 +92,40 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <argLine>@{surefireArgLine} -Xmx1024m</argLine>
+                </configuration>
             </plugin>
 
             <plugin>
