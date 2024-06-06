@@ -8,9 +8,9 @@ class DemoControllerGroovyTest extends Specification {
     @Subject
     DemoController demoController
 
-    def "show example message"() {
+    def "show demo message"() {
         expect:
-        demoController.getExampleMessage() == "Example"
+        demoController.getGroovyDemoMessage() == "Demo Groovy"
     }
 
     def "test numberLowerThanTen"() {

@@ -74,6 +74,25 @@
         </dependency>
 
         <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.blogspot.toomuchcoding</groupId>
             <artifactId>spock-subjects-collaborators-extension</artifactId>
             <version>2.0.0</version>
@@ -92,6 +111,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>${pitest-junit5.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
@@ -154,6 +186,32 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <source>src/test/kotlin</source>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -161,25 +219,12 @@
         <!-- Profile for running mutation testing on the entire project -->
         <profile>
             <id>pitest</id>
-            <properties>
-                <skip.integration.tests>true</skip.integration.tests>
-                <skip.surefire.tests>true</skip.surefire.tests>
-                <copy-mc-configs.skip>false</copy-mc-configs.skip>
-                <copy-mc-configs.outputDirectory>src/main/webapp/WEB-INF</copy-mc-configs.outputDirectory>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
                         <version>${pitest.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.pitest</groupId>
-                                <artifactId>pitest-junit5-plugin</artifactId>
-                                <version>${pitest-junit5.version}</version>
-                            </dependency>
-                        </dependencies>
                         <executions>
                             <execution>
                                 <phase>test</phase>
@@ -205,15 +250,10 @@
                 </plugins>
             </build>
         </profile>
+
         <!-- Profile for running mutation testing on the classes modified locally -->
         <profile>
             <id>pitest-local</id>
-            <properties>
-                <skip.integration.tests>true</skip.integration.tests>
-                <skip.surefire.tests>true</skip.surefire.tests>
-                <copy-mc-configs.skip>false</copy-mc-configs.skip>
-                <copy-mc-configs.outputDirectory>src/main/webapp/WEB-INF</copy-mc-configs.outputDirectory>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -233,13 +273,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.pitest</groupId>
-                                <artifactId>pitest-junit5-plugin</artifactId>
-                                <version>${pitest-junit5.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>

@@ -7,13 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class DemoControllerTest {
+public class DemoControllerJunit5Test {
 
     @Autowired
     private DemoController demoController;
 
     @Test
     void testDemoMessage() {
-        assertEquals(demoController.getDemoMessage(),"Demo");
+        assertEquals(demoController.getJunit5DemoMessage(), "Demo Junit 5");
     }
 }
