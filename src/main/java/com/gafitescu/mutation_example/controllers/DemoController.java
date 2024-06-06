@@ -1,10 +1,15 @@
 package com.gafitescu.mutation_example.controllers;
 
+import com.gafitescu.mutation_example.services.DemoKotlinService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DemoController {
+    @Autowired
+    private DemoKotlinService demoKotlinService;
 
     @GetMapping("/demo-junit5")
     String getJunit5DemoMessage() {
@@ -24,6 +29,12 @@ public class DemoController {
     @GetMapping("/demo-kotlin")
     String getKotlinMessage() {
         return "Demo Kotlin";
+    }
+
+    @GetMapping("/demo-kotlin-random")
+    String getKotlinRandomMessage(@RequestParam(value = "upper-boundary", defaultValue = "30") int upperBoundary) {
+        var randomNumber = demoKotlinService.getRandomNumberLowerThan(upperBoundary);
+        return "Demo Kotlin " + randomNumber;
     }
 
     public boolean numberLowerThanTen(int number) {

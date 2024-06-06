@@ -12,7 +12,7 @@ class DemoControllerKotlinTest {
     lateinit var demoController: DemoController
 
     @Test
-    fun test1() {
+    fun testDemoMessage() {
         assertEquals("Demo Kotlin", demoController.kotlinMessage)
     }
 }
